@@ -25,58 +25,58 @@ import java.util.List;
 
 @EnableJpaRepositories(basePackages = "dsi.esprit.tn.repository")
 public class AuthTokenFilter extends OncePerRequestFilter {
-  @Autowired
-  private JwtUtils jwtUtils;
+    @Autowired
+    private JwtUtils jwtUtils;
 
 
-  private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
-    try {
-      String jwt = parseJwt(request);
-      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        List<String> details = jwtUtils.getDetailsFromJwtToken(jwt);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String jwt = parseJwt(request);
+            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                List<String> details = jwtUtils.getDetailsFromJwtToken(jwt);
 
-        if(details.get(2).contains("ROLE_ADMIN"))
-          authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if(details.get(2).contains("ROLE_USER"))
-          authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if(details.get(2).contains("ROLE_MODERATOR"))
-          authorities.add(new SimpleGrantedAuthority("ROLE_MODERATOR"));
+                if (details.get(2).contains("ROLE_ADMIN"))
+                    authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                if (details.get(2).contains("ROLE_USER"))
+                    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                if (details.get(2).contains("ROLE_MODERATOR"))
+                    authorities.add(new SimpleGrantedAuthority("ROLE_MODERATOR"));
 
-        logger.info("jwt Token subject: {}", details.get(2));
-        logger.info("User authorities: {}", authorities);
+                logger.info("jwt Token subject: {}", details.get(2));
+                logger.info("User authorities: {}", authorities);
 
-        UserDetails userDetails =
-                new User(details.get(0), details.get(1), authorities);
-        logger.info("User Details: {}", userDetails);
-        UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                    authorities);
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UserDetails userDetails =
+                        new User(details.get(0), details.get(1), authorities);
+                logger.info("User Details: {}", userDetails);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                authorities);
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      }
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
-    } catch (Exception e) {
-      logger.error("Cannot set user authentication: {}", e);
+        } catch (Exception e) {
+            logger.error("Cannot set user authentication: {}", e);
+        }
+
+        filterChain.doFilter(request, response);
     }
 
-    filterChain.doFilter(request, response);
-  }
+    private String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
 
-  private String parseJwt(HttpServletRequest request) {
-    String headerAuth = request.getHeader("Authorization");
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7);
+        }
 
-    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-      return headerAuth.substring(7);
+        return null;
     }
-
-    return null;
-  }
 }
