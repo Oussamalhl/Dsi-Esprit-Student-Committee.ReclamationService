@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +78,7 @@ public class reclamationServiceController {
         return reclamationservice.getUser(idReclamation);
     }
 
-    @GetMapping("/gettargets")
+    @GetMapping("/getTargets")
     public List<String> getTargets(@RequestParam String type) {
         return reclamationservice.getTargets(type);
     }
@@ -152,14 +155,29 @@ public class reclamationServiceController {
         return IRFS.findAll();
     }
 
-    @GetMapping(path = { "/getImage/{imageName}" })
-    public reclamationFile getImage(@PathVariable("imageName") String imageName) throws IOException {
+    @GetMapping("/getRecByDate")
+    public List<Reclamation>getReclamationsByDate(@RequestParam("startDate") String startDate, @RequestParam("endDate")String endDate) throws ParseException {
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        //sdformat.parse(startDate);
+        return reclamationservice.getReclamationsByDate(sdformat.parse(startDate),sdformat.parse(endDate));
+    }
 
-        reclamationFile retrievedImage = IRFS.getImageByName(imageName);
-        //IRFS.decompressBytes(retrievedImage.getPicByte());
-//        reclamationFile img = new reclamationFile(retrievedImage.getFileName(),
-//                IRFS.decompressBytes(retrievedImage.getPicByte()));
-        return retrievedImage;
+    @GetMapping("/countRecByMonth")
+    public Integer countReclamationsByDate(@RequestParam("month") Integer month, @RequestParam("year")Integer year) {
+        //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        //sdformat.parse(startDate);
+        return reclamationservice.countReclamationsByMonth(month,year);
+    }
+    @GetMapping("/countAllRecByMonth")
+    public List<Integer[]> countAllReclamationsByDate() {
+        //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        //sdformat.parse(startDate);
+        return reclamationservice.countAllReclamationsByMonth();
+    }
+
+    @GetMapping("/countRecStatusByYear")
+    public List<Integer[]> countReclamationStatusByYear() {
+        return reclamationservice.countReclamationStatusByYear();
     }
 
 }

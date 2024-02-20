@@ -11,5 +11,4 @@ public interface IreclamationFileService {
     public List<reclamationFile> findAll();
     byte[] decompressBytes(byte[] data);
     public List<reclamationFile>GetReclamationFiles(Long id);
-    reclamationFile getImageByName(String name);
 }

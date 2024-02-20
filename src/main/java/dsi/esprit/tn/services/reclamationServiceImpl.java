@@ -69,4 +69,25 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         }
         return null;
     }
+    @Override
+    public List<Reclamation> getReclamationsByDate(Date startDate,Date endDate) {
+        return reclamationRepository.selectReclamationsByDate(startDate,endDate);
+
+    }
+    @Override
+    public Integer countReclamationsByMonth(int month,int year) {
+        return reclamationRepository.countReclamationsByMonth(month,year);
+
+    }
+    @Override
+    public List<Integer[]> countAllReclamationsByMonth() {
+        return reclamationRepository.countAllReclamationsByMonth();
+
+    }
+    @Override
+    public List<Integer[]> countReclamationStatusByYear() {
+        return reclamationRepository.countReclamationStatusByYear();
+
+    }
+
 }

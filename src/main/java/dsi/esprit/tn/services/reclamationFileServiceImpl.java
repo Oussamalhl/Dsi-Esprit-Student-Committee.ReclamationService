@@ -105,9 +105,6 @@ public class reclamationFileServiceImpl implements IreclamationFileService {
         return fr.findAll();
 
     }
-    public reclamationFile getImageByName(String name){
-        return fr.findByFileName(name).orElseThrow(() -> new UsernameNotFoundException("Image Not Found with name: " + name));
-    }
 
     public List<reclamationFile>GetReclamationFiles(Long id){
         List<reclamationFile> list= new ArrayList<reclamationFile>();

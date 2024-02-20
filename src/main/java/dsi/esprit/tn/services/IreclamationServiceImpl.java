@@ -2,6 +2,7 @@ package dsi.esprit.tn.services;
 
 import dsi.esprit.tn.Models.Reclamation;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IreclamationServiceImpl {
@@ -20,4 +21,8 @@ public interface IreclamationServiceImpl {
     Reclamation showReclamation(Long id);
 
     List<String> getTargets(String type);
+    List<Reclamation> getReclamationsByDate(Date startDate, Date endDate);
+    Integer countReclamationsByMonth(int month,int year);
+    List<Integer[]> countAllReclamationsByMonth();
+    List<Integer[]> countReclamationStatusByYear();
 }

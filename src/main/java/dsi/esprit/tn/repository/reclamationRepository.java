@@ -64,4 +64,14 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
 
     @Query(value = "SELECT name FROM foyers", nativeQuery = true)
     List<String> getTragetFoyer();
+
+    @Query(value = "SELECT * FROM reclamations WHERE date BETWEEN :startDate and :endDate", nativeQuery = true)
+    List<Reclamation> selectReclamationsByDate(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+    @Query(value = "SELECT COUNT(*) FROM reclamations WHERE MONTH(date)=? AND YEAR(date)=?", nativeQuery = true)
+    Integer countReclamationsByMonth(@Param("month") int month,@Param("year") int year);
+    @Query(value = "SELECT YEAR(date),MONTH(date),COUNT(*) FROM reclamations GROUP BY YEAR(date),MONTH(date)", nativeQuery = true)
+    List<Integer[]> countAllReclamationsByMonth();
+
+    @Query(value = "SELECT YEAR(date),COUNT(*) FROM reclamations WHERE status=TRUE GROUP BY YEAR(date)", nativeQuery = true)
+    List<Integer[]> countReclamationStatusByYear();
 }
