@@ -25,4 +25,5 @@ public interface IreclamationServiceImpl {
     Integer countReclamationsByMonth(int month,int year);
     List<Integer[]> countAllReclamationsByMonth();
     List<Integer[]> countReclamationStatusByYear();
+    List<Object[]> countReclamationTypeByYear();
 }

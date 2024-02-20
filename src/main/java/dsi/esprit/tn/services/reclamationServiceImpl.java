@@ -89,5 +89,10 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         return reclamationRepository.countReclamationStatusByYear();
 
     }
+    @Override
+    public List<Object[]> countReclamationTypeByYear() {
+        return reclamationRepository.countReclamationTypeByYear();
+
+    }
 
 }

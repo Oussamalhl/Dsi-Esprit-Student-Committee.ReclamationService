@@ -179,5 +179,9 @@ public class reclamationServiceController {
     public List<Integer[]> countReclamationStatusByYear() {
         return reclamationservice.countReclamationStatusByYear();
     }
+    @GetMapping("/countRecTypeByYear")
+    public List<Object[]> countReclamationTypeByYear() {
+        return reclamationservice.countReclamationTypeByYear();
+    }
 
 }
