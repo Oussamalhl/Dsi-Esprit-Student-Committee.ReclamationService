@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface reclamationFileRepository  extends JpaRepository<reclamationFile,Long> {
-    Optional<reclamationFile> findByFileName(String name);
+    //Optional<reclamationFile> findByFileName(String name);
 }

@@ -62,9 +62,9 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
     @Override
     public List<String> getTargets(String type) {
         switch (type) {
-            case "club":
+            case "CLUB":
                 return reclamationRepository.getTragetClubs();
-            case "event":
+            case "EVENT":
                 return reclamationRepository.getTragetevents();
         }
         return null;
@@ -92,6 +92,12 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
     @Override
     public List<Object[]> countReclamationTypeByYear() {
         return reclamationRepository.countReclamationTypeByYear();
+
+    }
+
+    @Override
+    public String getUsernameDetails(String username) {
+        return reclamationRepository.findUsernameDetails(username);
 
     }
 

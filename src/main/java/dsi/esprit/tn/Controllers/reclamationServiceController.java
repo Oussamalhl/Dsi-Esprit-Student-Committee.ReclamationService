@@ -3,8 +3,8 @@ package dsi.esprit.tn.Controllers;
 
 import dsi.esprit.tn.Models.Reclamation;
 import dsi.esprit.tn.Models.reclamationFile;
-import dsi.esprit.tn.repository.reclamationFileRepository;
 import dsi.esprit.tn.security.jwt.JwtUtils;
+import dsi.esprit.tn.services.IEmailingServiceImpl;
 import dsi.esprit.tn.services.IreclamationFileService;
 import dsi.esprit.tn.services.IreclamationServiceImpl;
 import org.slf4j.Logger;
@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,8 @@ public class reclamationServiceController {
     IreclamationFileService IRFS;
     @Autowired
     private IreclamationServiceImpl reclamationservice;
-
+    @Autowired
+    IEmailingServiceImpl IemailS;
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -112,24 +114,19 @@ public class reclamationServiceController {
     }
 
     @PostMapping("/addreclamation")
-    public ResponseEntity<?> addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) {
+    public ResponseEntity<?> addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) throws Exception {
 
         String jwt = jwtUtils.parseJwt(request);
         if (jwt != null) {
             logger.info("RECjwt: {}", jwt);
             String username = jwtUtils.getUserNameFromJwtToken(jwt);
+            List<String> user = Arrays.asList(reclamationservice.getUsernameDetails(username).split(",", -1));
+
             logger.info("RECdetails: {}", username);
             reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
+            IemailS.ReclamationSentMail(user,reclamation);
             return ResponseEntity.ok(reclamation.toString());
 
-//            else if(eventId!=null && clubId==null) {
-//                reclamationservice.addEventReclamation(reclamation, reclamationservice.showReclamationUser(details.get(0).trim()), eventId);
-//                return ResponseEntity.ok(reclamation.toString()+eventId);
-//            }
-//            else {
-//                reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(details.get(0).trim()));
-//                return ResponseEntity.ok(reclamation.toString());
-//            }
 
         }
         return ResponseEntity

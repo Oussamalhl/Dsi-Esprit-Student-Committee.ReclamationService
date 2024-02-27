@@ -24,7 +24,7 @@ public class Reclamation implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 50)
     private String name;
 
     @Temporal(TemporalType.DATE)
