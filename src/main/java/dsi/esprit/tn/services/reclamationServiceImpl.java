@@ -100,5 +100,9 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         return reclamationRepository.findUsernameDetails(username);
 
     }
+    @Override
+    public Integer countAllReclamations() {
+        return reclamationRepository.countAllReclamations();
+    }
 
 }

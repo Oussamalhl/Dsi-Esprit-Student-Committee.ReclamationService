@@ -27,4 +27,6 @@ public interface IreclamationServiceImpl {
     List<Integer[]> countReclamationStatusByYear();
     List<Object[]> countReclamationTypeByYear();
     String getUsernameDetails(String username);
+    Integer countAllReclamations();
+
 }

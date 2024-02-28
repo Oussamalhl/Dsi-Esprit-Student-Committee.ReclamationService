@@ -69,17 +69,17 @@ public class reclamationServiceController {
     public Boolean moderatorTest() {
         return true;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getuserid")
     public Long getUserId(@RequestParam String username) {
         return reclamationservice.showReclamationUser(username);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getUser")
     public Long getUser(@RequestParam Long idReclamation) {
         return reclamationservice.getUser(idReclamation);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getTargets")
     public List<String> getTargets(@RequestParam String type) {
         return reclamationservice.getTargets(type);
@@ -112,7 +112,7 @@ public class reclamationServiceController {
         return ResponseEntity.ok("Reclamationid: " + reclamation.getId() + " is successfully updated");
 
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping("/addreclamation")
     public ResponseEntity<?> addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) throws Exception {
 
@@ -133,25 +133,27 @@ public class reclamationServiceController {
                 .badRequest()
                 .body("Error: Bad request");
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping(path="/addFile/{id}")
     public reclamationFile addFile(@PathVariable("id")long id, @RequestParam("file") MultipartFile file) throws IOException {
         return IRFS.addFile(file, id);
     };
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @DeleteMapping("/{id}/deleteFile/{File}")
     public void deleteFile(@PathVariable("File")Long File, @PathVariable("id") long id ) throws IOException {
         IRFS.removeFile(File, id);};
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getFiles/{id}")
     public List<reclamationFile>reclamationFiles(@PathVariable("id")Long id){
         return IRFS.GetReclamationFiles(id);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getAllFiles")
     public List<reclamationFile>reclamationAllFiles(){
         return IRFS.findAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getRecByDate")
     public List<Reclamation>getReclamationsByDate(@RequestParam("startDate") String startDate, @RequestParam("endDate")String endDate) throws ParseException {
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -159,26 +161,33 @@ public class reclamationServiceController {
         return reclamationservice.getReclamationsByDate(sdformat.parse(startDate),sdformat.parse(endDate));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecByMonth")
     public Integer countReclamationsByDate(@RequestParam("month") Integer month, @RequestParam("year")Integer year) {
         //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         //sdformat.parse(startDate);
         return reclamationservice.countReclamationsByMonth(month,year);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countAllRecByMonth")
     public List<Integer[]> countAllReclamationsByDate() {
         //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         //sdformat.parse(startDate);
         return reclamationservice.countAllReclamationsByMonth();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecStatusByYear")
     public List<Integer[]> countReclamationStatusByYear() {
         return reclamationservice.countReclamationStatusByYear();
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecTypeByYear")
     public List<Object[]> countReclamationTypeByYear() {
         return reclamationservice.countReclamationTypeByYear();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/countAllRec")
+    public Integer countAllReclamations() {
+        return reclamationservice.countAllReclamations();
+    }
 }
