@@ -170,20 +170,20 @@ public class reclamationServiceController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countAllRecByMonth")
-    public List<Integer[]> countAllReclamationsByDate() {
+    public List<Integer[]> countAllReclamationsByDate(@RequestParam Integer year) {
         //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         //sdformat.parse(startDate);
-        return reclamationservice.countAllReclamationsByMonth();
+        return reclamationservice.countAllReclamationsByMonth(year);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecStatusByYear")
-    public List<Integer[]> countReclamationStatusByYear() {
-        return reclamationservice.countReclamationStatusByYear();
+    public List<Integer[]> countReclamationStatusByYear(@RequestParam Integer year) {
+        return reclamationservice.countReclamationStatusByYear(year);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecTypeByYear")
-    public List<Object[]> countReclamationTypeByYear() {
-        return reclamationservice.countReclamationTypeByYear();
+    public List<Object[]> countReclamationTypeByYear(@RequestParam Integer year) {
+        return reclamationservice.countReclamationTypeByYear(year);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countAllRec")

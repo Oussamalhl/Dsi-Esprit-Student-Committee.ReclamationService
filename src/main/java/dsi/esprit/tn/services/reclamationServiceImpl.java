@@ -80,18 +80,18 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
 
     }
     @Override
-    public List<Integer[]> countAllReclamationsByMonth() {
-        return reclamationRepository.countAllReclamationsByMonth();
+    public List<Integer[]> countAllReclamationsByMonth(Integer year) {
+        return reclamationRepository.countAllReclamationsByMonth(year);
 
     }
     @Override
-    public List<Integer[]> countReclamationStatusByYear() {
-        return reclamationRepository.countReclamationStatusByYear();
+    public List<Integer[]> countReclamationStatusByYear(Integer year) {
+        return reclamationRepository.countReclamationStatusByYear(year);
 
     }
     @Override
-    public List<Object[]> countReclamationTypeByYear() {
-        return reclamationRepository.countReclamationTypeByYear();
+    public List<Object[]> countReclamationTypeByYear(Integer year) {
+        return reclamationRepository.countReclamationTypeByYear(year);
 
     }
 
