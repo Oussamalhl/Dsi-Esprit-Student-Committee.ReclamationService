@@ -15,9 +15,9 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
     reclamationRepository reclamationRepository;
 
     @Override
-    public void addReclamation(Reclamation reclamation, Long userId) {
+    public Reclamation addReclamation(Reclamation reclamation, Long userId) {
         reclamation.setDate(new Date());
-        reclamationRepository.addReclamation(reclamation.getName(),
+        return reclamationRepository.addReclamation(reclamation.getName(),
                 reclamation.getDescription(),
                 reclamation.getStatus(),
                 reclamation.getType(),

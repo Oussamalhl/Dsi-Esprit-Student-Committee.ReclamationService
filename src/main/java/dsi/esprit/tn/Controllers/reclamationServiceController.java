@@ -87,34 +87,31 @@ public class reclamationServiceController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/showallReclamations")
-    public ResponseEntity<?> showAllReclamations() {
-        return ResponseEntity.ok(reclamationservice.showAllReclamation());
+    public List<Reclamation> showAllReclamations() {
+        return reclamationservice.showAllReclamation();
     }
 
     @GetMapping("/showReclamation")
-    public ResponseEntity<?> showReclamation(@Valid @RequestParam long idReclamation) {
-        return ResponseEntity.ok(reclamationservice.showReclamation(idReclamation));
+    public Reclamation showReclamation(@Valid @RequestParam long idReclamation) {
+        return reclamationservice.showReclamation(idReclamation);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/deleteReclamation")
-    public ResponseEntity<?> deleteReclamation(@Valid @RequestParam long idReclamation) {
+    public void deleteReclamation(@Valid @RequestParam long idReclamation) {
 
         reclamationservice.deleteReclamation(idReclamation);
-        return ResponseEntity.ok("Reclamation Id:" + idReclamation + " is successfully deleted");
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/updateReclamation")
-    public ResponseEntity<?> updateReclamation(@RequestBody Reclamation reclamation) {
+    public Reclamation updateReclamation(@RequestBody Reclamation reclamation) {
 
-        reclamationservice.updateReclamation(reclamation);
-        return ResponseEntity.ok("Reclamationid: " + reclamation.getId() + " is successfully updated");
-
+        return reclamationservice.updateReclamation(reclamation);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping("/addreclamation")
-    public ResponseEntity<?> addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) throws Exception {
+    public Reclamation addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) throws Exception {
 
         String jwt = jwtUtils.parseJwt(request);
         if (jwt != null) {
@@ -123,15 +120,12 @@ public class reclamationServiceController {
             List<String> user = Arrays.asList(reclamationservice.getUsernameDetails(username).split(",", -1));
 
             logger.info("RECdetails: {}", username);
-            reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
+            //reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
             IemailS.ReclamationSentMail(user,reclamation);
-            return ResponseEntity.ok(reclamation.toString());
-
+            return reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
 
         }
-        return ResponseEntity
-                .badRequest()
-                .body("Error: Bad request");
+        return null;
     }
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping(path="/addFile/{id}")
@@ -139,9 +133,9 @@ public class reclamationServiceController {
         return IRFS.addFile(file, id);
     };
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    @DeleteMapping("/{id}/deleteFile/{File}")
-    public void deleteFile(@PathVariable("File")Long File, @PathVariable("id") long id ) throws IOException {
-        IRFS.removeFile(File, id);};
+    @DeleteMapping("/deleteFile/{File}")
+    public void deleteFile(@PathVariable("File")Long File ) {
+        IRFS.removeFile(File);};
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getFiles/{id}")
     public List<reclamationFile>reclamationFiles(@PathVariable("id")Long id){

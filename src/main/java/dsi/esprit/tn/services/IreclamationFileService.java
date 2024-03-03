@@ -6,9 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IreclamationFileService {
-    public reclamationFile addFile(MultipartFile file, Long id);
-    public void removeFile(Long f, Long id) ;
+    reclamationFile addFile(MultipartFile file, Long id);
+    void removeFile(Long f) ;
     public List<reclamationFile> findAll();
-    byte[] decompressBytes(byte[] data);
-    public List<reclamationFile>GetReclamationFiles(Long id);
+    List<reclamationFile>GetReclamationFiles(Long id);
 }
