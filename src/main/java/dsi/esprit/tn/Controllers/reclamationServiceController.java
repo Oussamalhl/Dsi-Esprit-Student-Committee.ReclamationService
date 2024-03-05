@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -70,11 +71,6 @@ public class reclamationServiceController {
         return true;
     }
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    @GetMapping("/getuserid")
-    public Long getUserId(@RequestParam String username) {
-        return reclamationservice.showReclamationUser(username);
-    }
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getUser")
     public Long getUser(@RequestParam Long idReclamation) {
         return reclamationservice.getUser(idReclamation);
@@ -95,7 +91,16 @@ public class reclamationServiceController {
     public Reclamation showReclamation(@Valid @RequestParam long idReclamation) {
         return reclamationservice.showReclamation(idReclamation);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @GetMapping("/showURec")
+    public List<Reclamation> showUserReclamations(HttpServletRequest request) {
+        String jwt = jwtUtils.parseJwt(request);
+        if (jwt != null) {
+            String username = jwtUtils.getUserNameFromJwtToken(jwt);
+            return reclamationservice.showUserReclamations(reclamationservice.showReclamationUser(username.trim()));
+        }
+        return Collections.emptyList();
+    }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/deleteReclamation")
     public void deleteReclamation(@Valid @RequestParam long idReclamation) {

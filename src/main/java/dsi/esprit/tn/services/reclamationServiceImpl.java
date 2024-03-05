@@ -46,7 +46,11 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         return reclamationRepository.findUsernameId(username);
 
     }
+    @Override
+    public List<Reclamation> showUserReclamations(Long idUser) {
+        return reclamationRepository.showUserReclamations(idUser);
 
+    }
     @Override
     public Reclamation showReclamation(Long idReclamation) {
         return reclamationRepository.findById(idReclamation).orElse(null);

@@ -49,6 +49,8 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
     );
     @Query(value = "SELECT username,email,firstname,lastname FROM users WHERE username=?1", nativeQuery = true)
     String findUsernameDetails(String username);
+    @Query(value = "SELECT * FROM reclamations WHERE user_id=?1", nativeQuery = true)
+    List<Reclamation> showUserReclamations(Long user_id);
     @Query(value = "SELECT id FROM users WHERE username=?1", nativeQuery = true)
     Long findUsernameId(String username);
 
