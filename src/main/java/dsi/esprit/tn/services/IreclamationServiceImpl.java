@@ -8,7 +8,7 @@ import java.util.List;
 public interface IreclamationServiceImpl {
     Long showReclamationUser(String username);
 
-    Reclamation addReclamation(Reclamation reclamation, Long userId);
+    void addReclamation(Reclamation reclamation, Long userId);
 
     Long getUser(Long idReclamation);
 

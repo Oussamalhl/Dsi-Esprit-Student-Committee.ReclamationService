@@ -70,11 +70,13 @@ public class reclamationServiceController {
     public Boolean moderatorTest() {
         return true;
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getUser")
     public Long getUser(@RequestParam Long idReclamation) {
         return reclamationservice.getUser(idReclamation);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getTargets")
     public List<String> getTargets(@RequestParam String type) {
@@ -91,6 +93,7 @@ public class reclamationServiceController {
     public Reclamation showReclamation(@Valid @RequestParam long idReclamation) {
         return reclamationservice.showReclamation(idReclamation);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/showURec")
     public List<Reclamation> showUserReclamations(HttpServletRequest request) {
@@ -101,6 +104,7 @@ public class reclamationServiceController {
         }
         return Collections.emptyList();
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/deleteReclamation")
     public void deleteReclamation(@Valid @RequestParam long idReclamation) {
@@ -114,59 +118,87 @@ public class reclamationServiceController {
 
         return reclamationservice.updateReclamation(reclamation);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping("/addreclamation")
     public Reclamation addReclamation(HttpServletRequest request, @RequestBody Reclamation reclamation) throws Exception {
 
         String jwt = jwtUtils.parseJwt(request);
         if (jwt != null) {
+            reclamation.setDate(new Date());
+            reclamation.setStatus(true);
             logger.info("RECjwt: {}", jwt);
             String username = jwtUtils.getUserNameFromJwtToken(jwt);
             List<String> user = Arrays.asList(reclamationservice.getUsernameDetails(username).split(",", -1));
 
             logger.info("RECdetails: {}", username);
             //reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
-            IemailS.ReclamationSentMail(user,reclamation);
-            return reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
+            IemailS.ReclamationSentMail(user, reclamation);
+            reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
+
+            return reclamation;
 
         }
         return null;
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/addreclamationa")
+    public Reclamation addReclamationAdmin(@RequestBody Reclamation reclamation, @RequestParam String username) throws Exception {
+
+
+        try{
+            reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
+        }catch (Exception e) {
+            System.out.println("Something went wrong.");
+        }
+        return reclamation;
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    @PostMapping(path="/addFile/{id}")
-    public reclamationFile addFile(@PathVariable("id")long id, @RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping(path = "/addFile/{id}")
+    public reclamationFile addFile(@PathVariable("id") long id, @RequestParam("file") MultipartFile file) throws IOException {
         return IRFS.addFile(file, id);
-    };
+    }
+
+    ;
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @DeleteMapping("/deleteFile/{File}")
-    public void deleteFile(@PathVariable("File")Long File ) {
-        IRFS.removeFile(File);};
+    public void deleteFile(@PathVariable("File") Long File) {
+        IRFS.removeFile(File);
+    }
+
+    ;
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/getFiles/{id}")
-    public List<reclamationFile>reclamationFiles(@PathVariable("id")Long id){
+    public List<reclamationFile> reclamationFiles(@PathVariable("id") Long id) {
         return IRFS.GetReclamationFiles(id);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getAllFiles")
-    public List<reclamationFile>reclamationAllFiles(){
+    public List<reclamationFile> reclamationAllFiles() {
         return IRFS.findAll();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getRecByDate")
-    public List<Reclamation>getReclamationsByDate(@RequestParam("startDate") String startDate, @RequestParam("endDate")String endDate) throws ParseException {
+    public List<Reclamation> getReclamationsByDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws ParseException {
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         //sdformat.parse(startDate);
-        return reclamationservice.getReclamationsByDate(sdformat.parse(startDate),sdformat.parse(endDate));
+        return reclamationservice.getReclamationsByDate(sdformat.parse(startDate), sdformat.parse(endDate));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecByMonth")
-    public Integer countReclamationsByDate(@RequestParam("month") Integer month, @RequestParam("year")Integer year) {
+    public Integer countReclamationsByDate(@RequestParam("month") Integer month, @RequestParam("year") Integer year) {
         //SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         //sdformat.parse(startDate);
-        return reclamationservice.countReclamationsByMonth(month,year);
+        return reclamationservice.countReclamationsByMonth(month, year);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countAllRecByMonth")
     public List<Integer[]> countAllReclamationsByDate(@RequestParam Integer year) {
@@ -174,16 +206,19 @@ public class reclamationServiceController {
         //sdformat.parse(startDate);
         return reclamationservice.countAllReclamationsByMonth(year);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecStatusByYear")
     public List<Integer[]> countReclamationStatusByYear(@RequestParam Integer year) {
         return reclamationservice.countReclamationStatusByYear(year);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countRecTypeByYear")
     public List<Object[]> countReclamationTypeByYear(@RequestParam Integer year) {
         return reclamationservice.countReclamationTypeByYear(year);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/countAllRec")
     public Integer countAllReclamations() {

@@ -17,7 +17,7 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
     @Modifying
     @Transactional
     @Query(value = "insert into reclamations (name,description,status,type,target,date,user_id) VALUES (:name,:description,:status,:type,:target,:date,:user_id)", nativeQuery = true)
-    Reclamation addReclamation(@Param("name") String name,
+    void addReclamation(@Param("name") String name,
                         @Param("description") String description,
                         @Param("status") Boolean status,
                         @Param("type") String type,
