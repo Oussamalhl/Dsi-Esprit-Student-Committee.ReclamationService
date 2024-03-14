@@ -14,15 +14,21 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
     @Autowired
     reclamationRepository reclamationRepository;
 
+    //    @Override
+//    public void addReclamation(Reclamation reclamation, Long userId) {
+//         reclamationRepository.addReclamation(reclamation.getName(),
+//                reclamation.getDescription(),
+//                reclamation.getStatus(),
+//                reclamation.getType(),
+//                reclamation.getTarget(),
+//                reclamation.getDate(),
+//                userId);
+//    }
     @Override
-    public void addReclamation(Reclamation reclamation, Long userId) {
-         reclamationRepository.addReclamation(reclamation.getName(),
-                reclamation.getDescription(),
-                reclamation.getStatus(),
-                reclamation.getType(),
-                reclamation.getTarget(),
-                reclamation.getDate(),
-                userId);
+    public Reclamation addReclamation(Reclamation reclamation, Long userId) {
+        Reclamation Reclamation = reclamationRepository.save(reclamation);
+        reclamationRepository.setUserReclamation(userId,Reclamation.getId());
+        return Reclamation;
     }
 
     @Override
@@ -45,11 +51,13 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         return reclamationRepository.findUsernameId(username);
 
     }
+
     @Override
     public List<Reclamation> showUserReclamations(Long idUser) {
         return reclamationRepository.showUserReclamations(idUser);
 
     }
+
     @Override
     public Reclamation showReclamation(Long idReclamation) {
         return reclamationRepository.findById(idReclamation).orElse(null);
@@ -72,26 +80,31 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         }
         return null;
     }
+
     @Override
-    public List<Reclamation> getReclamationsByDate(Date startDate,Date endDate) {
-        return reclamationRepository.selectReclamationsByDate(startDate,endDate);
+    public List<Reclamation> getReclamationsByDate(Date startDate, Date endDate) {
+        return reclamationRepository.selectReclamationsByDate(startDate, endDate);
 
     }
+
     @Override
-    public Integer countReclamationsByMonth(int month,int year) {
-        return reclamationRepository.countReclamationsByMonth(month,year);
+    public Integer countReclamationsByMonth(int month, int year) {
+        return reclamationRepository.countReclamationsByMonth(month, year);
 
     }
+
     @Override
     public List<Integer[]> countAllReclamationsByMonth(Integer year) {
         return reclamationRepository.countAllReclamationsByMonth(year);
 
     }
+
     @Override
     public List<Integer[]> countReclamationStatusByYear(Integer year) {
         return reclamationRepository.countReclamationStatusByYear(year);
 
     }
+
     @Override
     public List<Object[]> countReclamationTypeByYear(Integer year) {
         return reclamationRepository.countReclamationTypeByYear(year);
@@ -103,6 +116,7 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         return reclamationRepository.findUsernameDetails(username);
 
     }
+
     @Override
     public Integer countAllReclamations() {
         return reclamationRepository.countAllReclamations();

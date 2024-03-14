@@ -134,9 +134,8 @@ public class reclamationServiceController {
             logger.info("RECdetails: {}", username);
             //reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
             IemailS.ReclamationSentMail(user, reclamation);
-            reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
 
-            return reclamation;
+            return reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
 
         }
         return null;

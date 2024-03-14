@@ -25,7 +25,10 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
                         @Param("date") Date date,
                         @Param("user_id") Long user_id
     );
-
+    @Modifying
+    @Transactional
+    @Query(value = "update reclamations set user_id=?1 where id=?2", nativeQuery = true)
+    void setUserReclamation(@Param("user_id") Long user_id,@Param("id") Long id);
     @Modifying
     @Transactional
     @Query(value = "insert into reclamations (name,description,status,type,user_id,club_id) VALUES (:name,:description,:status,:type,:user_id,:club_id)", nativeQuery = true)
