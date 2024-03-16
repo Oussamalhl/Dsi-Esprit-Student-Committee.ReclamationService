@@ -85,4 +85,6 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
     List<Object[]> countReclamationTypeByYear(Integer year);
     @Query(value = "SELECT COUNT(*) FROM reclamations", nativeQuery = true)
     Integer countAllReclamations();
+    @Query(value = "SELECT target,COUNT(*) FROM reclamations WHERE YEAR(date)=?1 GROUP BY target", nativeQuery = true)
+    List<Object[]> countReclamationTargetByYear(Integer year);
 }

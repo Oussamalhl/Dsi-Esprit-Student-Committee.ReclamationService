@@ -223,4 +223,9 @@ public class reclamationServiceController {
     public Integer countAllReclamations() {
         return reclamationservice.countAllReclamations();
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/countRecTargetByYear")
+    public List<Object[]> countReclamationTargetByYear(@RequestParam Integer year) {
+        return reclamationservice.countReclamationTargetByYear(year);
+    }
 }
