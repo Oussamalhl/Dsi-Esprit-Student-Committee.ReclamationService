@@ -30,5 +30,5 @@ public interface IreclamationServiceImpl {
     Integer countAllReclamations();
     List<Reclamation> showUserReclamations(Long idUser);
     List<Object[]> countReclamationTargetByYear(Integer year);
-
+    List<String> getUsers();
 }

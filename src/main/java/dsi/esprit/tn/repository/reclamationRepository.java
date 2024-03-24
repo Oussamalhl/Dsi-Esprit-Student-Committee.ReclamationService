@@ -62,6 +62,8 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
 
     @Query(value = "SELECT name FROM clubs", nativeQuery = true)
     List<String> getTragetClubs();
+    @Query(value = "SELECT username FROM users", nativeQuery = true)
+    List<String> getUsers();
 
     //    @Query(value = "SELECT id FROM users WHERE username=?1", nativeQuery = true)
 //    Long getClub (String username);

@@ -142,10 +142,15 @@ public class reclamationServiceController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/getusers")
+    public List<String> getUsers() {
+        return reclamationservice.getUsers();
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/addreclamationa")
     public Reclamation addReclamationAdmin(@RequestBody Reclamation reclamation, @RequestParam String username) throws Exception {
 
-
+        reclamation.setDate(new Date());
         try{
             reclamationservice.addReclamation(reclamation, reclamationservice.showReclamationUser(username.trim()));
         }catch (Exception e) {

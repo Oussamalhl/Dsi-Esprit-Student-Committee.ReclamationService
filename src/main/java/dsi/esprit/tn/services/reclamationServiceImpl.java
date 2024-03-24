@@ -80,7 +80,10 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
         }
         return null;
     }
-
+    @Override
+    public List<String> getUsers() {
+        return this.reclamationRepository.getUsers();
+    }
     @Override
     public List<Reclamation> getReclamationsByDate(Date startDate, Date endDate) {
         return reclamationRepository.selectReclamationsByDate(startDate, endDate);
