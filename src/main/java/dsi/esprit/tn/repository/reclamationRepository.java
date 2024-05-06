@@ -78,7 +78,6 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
     @Query(value = "SELECT COUNT(*) FROM reclamations WHERE MONTH(date)=? AND YEAR(date)=?", nativeQuery = true)
     Integer countReclamationsByMonth(@Param("month") int month,@Param("year") int year);
 
-
     @Query(value = "SELECT MONTH(date),COUNT(*) FROM reclamations WHERE YEAR(date)=?1 GROUP BY MONTH(date)", nativeQuery = true)
     List<Integer[]> countAllReclamationsByMonth(Integer year);
     @Query(value = "SELECT COUNT(*) FROM reclamations WHERE status=TRUE AND YEAR(date)=?1", nativeQuery = true)
@@ -87,6 +86,8 @@ public interface reclamationRepository extends JpaRepository<Reclamation, Long> 
     List<Object[]> countReclamationTypeByYear(Integer year);
     @Query(value = "SELECT COUNT(*) FROM reclamations", nativeQuery = true)
     Integer countAllReclamations();
+    @Query(value = "SELECT COUNT(*) FROM reclamations where status=true", nativeQuery = true)
+    Integer countAllDoneReclamations();
     @Query(value = "SELECT target,COUNT(*) FROM reclamations WHERE YEAR(date)=?1 GROUP BY target", nativeQuery = true)
     List<Object[]> countReclamationTargetByYear(Integer year);
 }

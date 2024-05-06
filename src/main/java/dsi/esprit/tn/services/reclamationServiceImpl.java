@@ -124,6 +124,11 @@ public class reclamationServiceImpl implements IreclamationServiceImpl {
     public Integer countAllReclamations() {
         return reclamationRepository.countAllReclamations();
     }
+    @Override
+    public Integer countAllDoneReclamations() {
+        return reclamationRepository.countAllDoneReclamations();
+    }
+
 
     @Override
     public List<Object[]> countReclamationTargetByYear(Integer year) {

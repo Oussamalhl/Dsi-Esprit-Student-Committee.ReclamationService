@@ -28,6 +28,7 @@ public interface IreclamationServiceImpl {
     List<Object[]> countReclamationTypeByYear(Integer year);
     String getUsernameDetails(String username);
     Integer countAllReclamations();
+    Integer countAllDoneReclamations();
     List<Reclamation> showUserReclamations(Long idUser);
     List<Object[]> countReclamationTargetByYear(Integer year);
     List<String> getUsers();
