@@ -1,6 +1,7 @@
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
+FROM  maven:3-jdk-8
+WORKDIR /dsi-esprit-reclamationservice
+COPY . .
+RUN ["mvn", "install", "-Dmaven.test.skip=true"]
 EXPOSE 8083
-ARG JAR_FILE=target/dsi.esprit.reclamationservice-1.0-SNAPSHOT.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+CMD mvn spring-boot:run

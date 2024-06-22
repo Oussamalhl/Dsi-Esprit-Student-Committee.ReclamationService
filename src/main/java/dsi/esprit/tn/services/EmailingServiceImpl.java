@@ -23,8 +23,9 @@ public class EmailingServiceImpl implements IEmailingServiceImpl {
     private String serverMail;
     @Autowired
     private JavaMailSender emailSender;
+    //static String TMP_UPLOAD_FOLDER ="E:\\Esprit DSI\\dsi.esprit.reclamationService\\reclamationservice\\tmp\\reclamation\\";
 
-    static String TMP_UPLOAD_FOLDER ="E:\\Esprit DSI\\dsi.esprit.reclamationService\\reclamationservice\\tmp\\reclamation\\";
+    static String TMP_UPLOAD_FOLDER ="/dsi-esprit-reclamationservice/tmp/reclamation/";
 
 
     public void ReclamationSentMail(List<String> user, Reclamation r) throws Exception {
